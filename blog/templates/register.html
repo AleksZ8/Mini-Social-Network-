@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<body>
+{% block content %}
+	{% if messages %}
+		{% for mess in messages %}
+		<li {% if mes.tags %} class="{{ mess.tags }}" {% endif %}>
+			{{ messages.tags }}
+		</li>
+		{% endfor %}
+	{% endif %}
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Зарегистрироваться</button>
+	</form>
+{% endblock %}
+</body>
