@@ -5,7 +5,7 @@
 	{% if messages %}
 		{% for mess in messages %}
 		<li {% if mes.tags %} class="{{ mess.tags }}" {% endif %}>
-			{{ messages.tags }}
+			<p> {{ messages }} </p>
 		</li>
 		{% endfor %}
 	{% endif %}

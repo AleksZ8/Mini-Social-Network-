@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for p in pages %}
+<div class="card" style="width: 18rem;">
+	<img src="{{ p.image.url }}" class="card-img-top" alt="">
+	<div class="card-body">
+		<h5 class="card-title">{{ p.name }}</h5>
+		<p class="card-text">{{ p.text }}</p>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}

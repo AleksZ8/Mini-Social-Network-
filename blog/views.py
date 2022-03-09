@@ -1,17 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib import messages
+from django.views.generic import ListView
 from .forms import AuthUser, UserRegister, Myprofile
 from .models import Profil, User
 
 
-def profile(request):
-    topic = User.objects.get(id=request.user.id)
+def pages(request):
+    pages = Profil.objects.all()
+    context = {'pages': pages}
+    return render(request, 'pages.html', context)
+
+
+
+
+def add_page(request):
+    user = User.objects.get(id=request.user.id)
     if request.method == 'POST':
         form = Myprofile(request.POST, request.FILES)
         if form.is_valid():
             new_form = form.save(commit=False)
-            new_form.profil = topic
+            new_form.profil = user
             new_form.save()
             return redirect('home')
     else:
@@ -19,10 +28,9 @@ def profile(request):
     return render(request, 'newprofile.html', {'form': form})
 
 
-
-#RLL
+# RLL
 def home(request):
-    return render (request, 'base.html')
+    return render(request, 'base.html')
 
 
 def register(request):
