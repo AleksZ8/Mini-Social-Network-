@@ -6,12 +6,17 @@ from .forms import AuthUser, UserRegister, Myprofile
 from .models import Profil, User
 
 
-def pages(request):
-    pages = Profil.objects.all()
-    context = {'pages': pages}
+class All_Pages(ListView):
+    model = Profil
+    template_name = 'pages.html'
+    context_object_name = 'pages'
+    paginate_by = 2
+
+
+def my_profile(request):
+    my_p = Profil.objects.filter(profil=request.user)
+    context = {'pages': my_p}
     return render(request, 'pages.html', context)
-
-
 
 
 def add_page(request):

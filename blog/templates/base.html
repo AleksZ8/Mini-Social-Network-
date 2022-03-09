@@ -23,18 +23,21 @@
 	</div><!--ЭТО ВЕРХНЯЯ ПАНЕЛЬКА-->
 </nav>
 <!--Это столбцы-->
+{% if request.user.is_authenticated %}
 <div class="row">
 	<div class="col-md-3">
 		<div class="list-group">
-			<a href="#" class="list-group-item list-group-item-action active" aria-current="true">Мой профиль</a>
+			<a href="{% url 'profil' %}"  class="list-group-item list-group-item-action active" aria-current="true">Мой профиль</a>
 			<a href="{% url 'add_page' %}" class="list-group-item list-group-item-action">Добавить</a>
 			<a href="{% url 'pages' %}" class="list-group-item list-group-item-action">Смотреть страницы</a>
 		</div>
 	</div>
+{% endif %}
 	<div class="col-md-9">
 		{% block content %}
 		{% endblock %}
 	</div>
 </div>
+
 </body>
 </html>
