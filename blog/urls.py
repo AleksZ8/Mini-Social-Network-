@@ -10,4 +10,5 @@ urlpatterns = [
     path('pages/', All_Pages.as_view(), name='pages'),
     path('profile/', my_profile, name='profil'),
     path('profile/<int:profile_id>', edit_profile, name='editprofil'),
+    path('send_mesage/<int:user_id>', send_mes, name='send'),
 ]

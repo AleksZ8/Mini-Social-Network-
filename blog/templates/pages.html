@@ -9,6 +9,7 @@
 			<div class="card-body">
 				<h5 class="card-title">{{ p.name }}</h5>
 				<p class="card-text">{{ p.text }}</p>
+				<a href="{% url 'send' p.id %}">email</a>
 			</div>
 		</div>
 		{% endfor %}
