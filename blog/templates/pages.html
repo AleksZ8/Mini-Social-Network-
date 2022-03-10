@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for p in pages %}
-<div class="card" style="width: 18rem;">
-	<img src="{{ p.image.url }}" class="card-img-top" alt="">
-	<div class="card-body">
-		<h5 class="card-title">{{ p.name }}</h5>
-		<p class="card-text">{{ p.text }}</p>
+<div class="row">
+	<div class="col-md-9 mt-1">
+		{% for p in pages %}
+		<div class="card-block" style="width: 18rem;">
+			<img src="{{ p.image.url }}" class="card-img-top" alt="">
+			<div class="card-body">
+				<h5 class="card-title">{{ p.name }}</h5>
+				<p class="card-text">{{ p.text }}</p>
+			</div>
+		</div>
+		{% endfor %}
 	</div>
 </div>
-{% endfor %}
 <nav aria-label="...">
 	{% if page_obj.has_other_pages %}
 	<ul class="pagination">

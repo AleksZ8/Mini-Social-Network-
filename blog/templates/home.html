@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-5 text-center container">
+	<div class="row py-lg-5">
+		<div class="col-lg-6 col-md-8 mx-auto">
+			<h1 class="fw-light">Мой первый сайт</h1>
+			<p class="lead text-muted">Первая работа в использовании Python/Django и (Bootstrap/Html)
+				На сайте присутствует система регистрации, авторизации, добавки профилей, редкатирования и удаления, а
+				так же отправки Email рассылки понравившемуся профилю.</p>
+			<p>
+				<a href="{% url 'add_page' %}" class="btn btn-primary my-2">Создать профиль<a>
+				<a href="{% url 'pages' %}" class="btn btn-secondary my-2">Посмотреть все</a>
+			</p>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

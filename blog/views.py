@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.views.generic import ListView
-from .forms import AuthUser, UserRegister, Myprofile
+from .forms import AuthUser, UserRegister, Myprofile, EditProfile
 from .models import Profil, User
 
 
@@ -12,11 +12,30 @@ class All_Pages(ListView):
     context_object_name = 'pages'
     paginate_by = 2
 
+    def get_queryset(self):
+        return Profil.objects.select_related('profil')
+
+
 
 def my_profile(request):
     my_p = Profil.objects.filter(profil=request.user)
     context = {'pages': my_p}
-    return render(request, 'pages.html', context)
+    return render(request, 'profil.html', context)
+
+
+def edit_profile(request, profile_id):
+    profile = Profil.objects.filter(profil=request.user).get(id=profile_id)
+    user = User.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        form = EditProfile(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.profil = user
+            new_form.save()
+            return redirect('home')
+    else:
+        form = EditProfile(instance=profile)
+    return render(request, 'editprofile.html', {'form':form})
 
 
 def add_page(request):
@@ -35,7 +54,7 @@ def add_page(request):
 
 # RLL
 def home(request):
-    return render(request, 'base.html')
+    return render(request, 'home.html')
 
 
 def register(request):

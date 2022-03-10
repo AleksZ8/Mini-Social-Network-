@@ -6,10 +6,18 @@ from django import forms
 from .models import Profil
 
 
+
+#PROFILE
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = Profil
+        fields = ['name', 'text', 'image']
+
 class Myprofile(forms.ModelForm):
     class Meta:
         model = Profil
         fields = ['name', 'text', 'image']
+
 
 #RLL
 class AuthUser(AuthenticationForm):
