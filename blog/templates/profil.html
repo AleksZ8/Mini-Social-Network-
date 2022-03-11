@@ -8,6 +8,12 @@
 <body>
 
 {% block content %}
+{% if pages %}
+	<h1 align="center">Мои страницы</h1>
+{% else %}
+	<h1> Добавьте страничку</h1>
+	<a href="{% url 'add_page' %}" class="list-group-item list-group-item-action">Добавить</a>
+{% endif %}
 {% for p in pages %}
 	<div class="row">
 		<div class="col-md-9">
@@ -17,6 +23,7 @@
 					<h5 class="card-title">{{ p.name }}</h5>
 					<p class="card-text">{{ p.text }}</p>
 					<a class="card-text" href="{% url 'editprofil' p.id %}">Редактировать</a>
+					<a class="card-text" href="{% url 'delprofile' p.id %}">Удалить</a>
 				</div>
 			</div>
 		</div>
