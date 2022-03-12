@@ -138,6 +138,6 @@ LOGIN_URL = 'auth'
 #EMAIL CONFIGURATION
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'aleks.zurnachyan@bk.ru'
-EMAIL_HOST_PASSWORD = '1PxcMyZLm183JGy9fFKs'
+EMAIL_HOST_USER = 'Your email'
+EMAIL_HOST_PASSWORD = 'your password'
 EMAIL_USE_SSL = True
