@@ -13,11 +13,11 @@
 		<a class="navbar-brand" href="{% url 'home' %}">Главная</a>
 		<ul class="nav nav-pills">
 			{% if request.user.is_authenticated %}
-			<a href="{% url 'quit' %}" class="nav-link active" aria-current="page"> Выйти </a>
+			<a href="{% url 'account_logout' %}" class="nav-link active" aria-current="page"> Выйти </a>
 			{% else %}
-			<li class="nav-item"><a href="{% url 'register' %}" class="nav-link active" aria-current="page">
+			<li class="nav-item"><a href="{% url 'account_signup' %}" class="nav-link active" aria-current="page">
 				Регистрация </a>
-			<li class="nav-item"><a href="{% url 'auth' %}" class="nav-link"> Войти </a></li>
+			<li class="nav-item"><a href="{% url 'account_login' %}" class="nav-link"> Войти </a></li>
 			{% endif %}
 		</ul>
 	</div>
@@ -31,6 +31,7 @@
 				профиль</a>
 			<a href="{% url 'add_page' %}" class="list-group-item list-group-item-action">Добавить</a>
 			<a href="{% url 'pages' %}" class="list-group-item list-group-item-action">Смотреть страницы</a>
+			<a href="{% url 'change' %}" class="list-group-item list-group-item-action">Изменить пароль</a>
 		</div>
 	</div>
 	<div class="col-md-9">	{% endif %}

@@ -4,7 +4,7 @@
 *.pyc
 __pycache__
 db.sqlite3
-mysite/media
+media
 
 # Backup files #
 *.bak
@@ -97,10 +97,10 @@ celerybeat-schedule.*
 *.sage.py
 
 # Environments
-../.env
+.env
 .venv
 env/
-../venv/
+venv/
 ENV/
 env.bak/
 venv.bak/
@@ -110,3 +110,33 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Sublime Text #
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+# Package control specific files Package
+Control.last-run
+Control.ca-list
+Control.ca-bundle
+Control.system-ca-bundle
+GitHub.sublime-settings
+
+/__pycache__/
+
+__pycache__*
+*DS_Store
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
+.idea/mysite.iml
+blog/.DS_Store
+blog/__pycache__/
+blog/migrations/__pycache__/
+mysite/__pycache__/
+templates/.DS_Store
