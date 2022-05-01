@@ -1,13 +1,24 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
-from django.contrib import messages
+from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import AuthUser, UserRegister, Myprofile, EditProfile, ContactForm
-from .models import Profil, User
+from .forms import Myprofile, EditProfile, ContactForm
 from django.core.mail import send_mail
-from mysite.settings import EMAIL_HOST_USER
+from .models import Profil, User
+
+
+def change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            us = form.save()
+            update_session_auth_hash(request, us)
+            return redirect('profil')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change.html', {'form': form})
 
 
 class all_pages(LoginRequiredMixin, ListView):
@@ -63,34 +74,34 @@ def home(request):
     return render(request, 'home.html')
 
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegister(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserRegister()
-    return render(request, 'register.html', {'form': form})
-
-
-def quit(request):
-    logout(request)
-    return redirect('auth')
-
-
-def authentication(request):
-    if request.method == "POST":
-        form = AuthUser(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = AuthUser()
-    return render(request, 'auth.html', {'form': form})
-
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserRegister(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = UserRegister()
+#     return render(request, 'register.html', {'form': form})
+#
+#
+# def quit(request):
+#     logout(request)
+#     return redirect('auth')
+#
+#
+# def authentication(request):
+#     if request.method == "POST":
+#         form = AuthUser(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = AuthUser()
+#     return render(request, 'login.html', {'form': form})
+#
 
 # email
 @login_required
@@ -104,7 +115,7 @@ def send_mes(request, user_id):
         if form.is_valid():
             mail_mes = f'Здравствуйте, {user_send.username} \nВам отправили письмо с сайта AleksZ8.\n ' \
                        f'Отправитель данного письма {sender.first_name} {sender.last_name} {mail}  \n {form.cleaned_data["body"]}'
-            send_mail(form.cleaned_data['subject'], mail_mes, EMAIL_HOST_USER, [user_send.email])
+            send_mail(form.cleaned_data['subject'], mail_mes, 'alexzurnachyan8@gmail.com', [user_send.email])
             return redirect('pages')
     else:
         form = ContactForm()
