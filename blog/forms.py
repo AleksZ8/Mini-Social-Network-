@@ -45,7 +45,6 @@ class AuthUser(AuthenticationForm):
     }))
 
     def clean(self):
-        super().clean()
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
@@ -55,8 +54,7 @@ class AuthUser(AuthenticationForm):
                 raise self.get_invalid_login_error()
             elif not self.user_cache.status:
                 send_activation_notification(self.request, self.user_cache)
-                raise ValidationError('Email not verify, check your email',
-                    code='invalid_login')
+                raise ValidationError('Нет подтвержден Email')
             else:
                 self.confirm_login_allowed(self.user_cache)
         return self.cleaned_data

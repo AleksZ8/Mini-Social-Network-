@@ -8,10 +8,12 @@ class User(AbstractUser):
 
 
 class Profil(models.Model):
-    profil = models.ForeignKey(User, on_delete=models.CASCADE)
+    profil = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     text = models.TextField()
     image = models.ImageField(upload_to='users')
+    ip = models.GenericIPAddressField(null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.name

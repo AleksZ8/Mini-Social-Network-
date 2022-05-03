@@ -13,14 +13,14 @@ from .forms import AuthUser, UserRegister, Myprofile, EditProfile, ContactForm, 
 from .models import Profil, User, Comment
 from django.core.mail import send_mail
 from mysite.settings import EMAIL_HOST_USER
-from .utils import send_activation_notification
+from .utils import send_activation_notification, city_search
 
 User = get_user_model()
 
 
-#detail view and comments
+@login_required
 def profileview(request, id):
-    P_id = Profil.objects.get(pk=id)
+    P_id = get_object_or_404(Profil, pk=id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -77,6 +77,8 @@ def add_page(request):
         if form.is_valid():
             new_form = form.save(commit=False)
             new_form.profil = user
+            new_form.ip = request.META['REMOTE_ADDR']
+            new_form.city = city_search(request.META['REMOTE_ADDR'])
             new_form.save()
             return redirect('profil')
     else:

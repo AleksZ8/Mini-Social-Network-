@@ -1,4 +1,5 @@
-from django.contrib.sites.shortcuts import get_current_site
+import requests
+import json
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode
@@ -28,3 +29,13 @@ def send_activation_notification(request, user):
     )
     email.send()
 
+
+def city_search(request: str) -> str:
+    token = 'a907a918a9546d'
+    url = f'https://ipinfo.io/{request}?token={token}'
+    response = requests.get(url).text
+    try:
+        a = json.loads(response)['city']
+    except KeyError:
+        a = 'Armenia'
+    return a
