@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Профиль</title>
+</head>
+<body>
+
+{% block content %}
+{% if pages %}
+	<h1 align="center">Мои страницы</h1>
+{% else %}
+	<h1> Добавьте страничку</h1>
+	<a href="{% url 'add_page' %}" class="list-group-item list-group-item-action">Добавить</a>
+{% endif %}
+{% for p in pages %}
+	<div class="row">
+		<div class="col-md-9">
+			<div class="card" style="width: 18rem;">
+				<img src="{{ p.image.url }}" class="card-img-top" alt="">
+				<div class="card-body">
+					<h5 class="card-title">{{ p.name }}</h5>
+					<p class="card-text">{{ p.text }}</p>
+					<a class="card-text" href="{% url 'editprofil' p.id %}">Редактировать</a>
+					<a class="card-text" href="{% url 'delprofile' p.id %}">Удалить</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+{% endblock %}
+</body>
+</html>

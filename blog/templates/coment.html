@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Профиль</title>
+</head>
+<body>
+
+{% block content %}
+<div class="row">
+	<div class="col-md-9">
+		<div class="card" style="width: 18rem;">
+			<img src="{{ profil.image.url }}" class="card-img-top" alt="">
+			<div class="card-body">
+				<h5 class="card-title">{{ profil.name }}</h5>
+				<p class="card-text">{{ profil.text }}</p>
+			</div>
+			{% for i in comment %}
+				<p class="card-text">{{ i.author }}</p>
+					<li>{{ i.content }}</li>
+					<li>{{ i.created_date|date:"D, d M, Y"}}</li>
+
+			{% endfor %}
+			<form method="post">{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" value="Send message">
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
+</body>
+</html>

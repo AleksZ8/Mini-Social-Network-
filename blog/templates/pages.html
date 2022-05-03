@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-9 mt-1">
+		{% for p in pages %}
+		<div class="card-block" style="width: 18rem;">
+			<img src="{{ p.image.url }}" class="card-img-top" alt="">
+			<div class="card-body">
+				<h5 class="card-title">{{ p.name }}</h5>
+				<p class="card-text">{{ p.text }}</p>
+				<a href="{% url 'send' p.id %}">Отправить email</a>
+				<a href="{% url 'detail' p.id %}">Открыть</a>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<nav aria-label="...">
+	{% if page_obj.has_other_pages %}
+	<ul class="pagination">
+		{% if page_obj.has_previous %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+		</li>
+		{% endif %}
+		{% for p in page_obj.paginator.page_range %}
+		<li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+		{% endfor %}
+		{% if page_obj.has_next %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+		</li>
+		{% endif %}
+	</ul>
+	{% endif %}
+</nav>
+{% endblock %}

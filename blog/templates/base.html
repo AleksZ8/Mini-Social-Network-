@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+	<meta charset="UTF-8">
+	<title>Блог</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<!--ЭТО ВЕРХНЯЯ ПАНЕЛЬКА-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{% url 'home' %}">Главная</a>
+		<ul class="nav nav-pills">
+			{% if request.user.is_authenticated %}
+			<a href="{% url 'quit' %}" class="nav-link active" aria-current="page"> Выйти </a>
+			{% else %}
+			<li class="nav-item"><a href="{% url 'register' %}" class="nav-link active" aria-current="page">
+				Регистрация </a>
+			<li class="nav-item"><a href="{% url 'auth' %}" class="nav-link"> Войти </a></li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>
+<!--ИНФОРМАЦИЯ-->
+<div class="row">
+	{% if request.user.is_authenticated %}
+	<div class="col-md-3 mt-3">
+		<div class="list-group">
+			<a href="{% url 'profil' %}" class="list-group-item list-group-item-action active" aria-current="true">Мой
+				профиль</a>
+			<a href="{% url 'add_page' %}" class="list-group-item list-group-item-action">Добавить</a>
+			<a href="{% url 'pages' %}" class="list-group-item list-group-item-action">Смотреть страницы</a>
+		</div>
+	</div>
+	<div class="col-md-9">	{% endif %}
+		{% block content %}
+		{% endblock %}
+	</div>
+</div>
+<!--FOOTER-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="vkontakte" viewBox="0 0 40 40">
+    <path d="M31.937,13.541c0.046-0.151,0.068-0.291,0.062-0.416c-0.015-0.362-0.264-0.625-0.85-0.625h-2.618	c-0.661,0-0.966,0.4-1.144,0.801c0,0-1.632,3.359-3.513,5.574c-0.61,0.641-0.92,0.625-1.25,0.625C22.447,19.5,22,19.286,22,18.699	v-5.185c0-0.694-0.173-1.014-0.732-1.014h-4.649C16.212,12.5,16,12.82,16,13.141c0,0.667,0.898,0.827,1,2.696v3.623	c0,0.88-0.153,1.04-0.483,1.04c-0.89,0-2.642-3-3.815-6.932c-0.254-0.774-0.508-1.068-1.169-1.068H8.89	C8.127,12.5,8,12.874,8,13.274c0,0.721,0.6,4.619,3.875,9.101c2.375,3.25,5.504,5.125,8.274,5.125c1.678,0,1.85-0.427,1.85-1.094	v-2.972C22,22.633,22.183,22.5,22.717,22.5c0.381,0,1.158,0.25,2.658,2c1.73,2.018,2.044,3,3.036,3h2.618	c0.608,0,0.957-0.255,0.971-0.75c0.003-0.126-0.015-0.267-0.056-0.424C31.75,25.75,30.86,24.342,29.75,23	c-0.615-0.743-1.222-1.479-1.501-1.879C28.062,20.86,27.991,20.676,28,20.5c0.009-0.185,0.105-0.361,0.249-0.607	C28.223,19.893,31.607,15.142,31.937,13.541z"/></path>
+  </symbol>
+  <symbol id="instagram" viewBox="0 0 16 16">
+      <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+  </symbol>
+</svg>
+<div class="container">
+	<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+		<div class="col-md-4 d-flex align-items-center">
+			<span class="text-muted">© 2022 AleksZ8 </span>
+		</div>
+		<ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+			<li class="ms-3"><a class="text-muted" href="https://vk.com/alex.zurnachyan">
+				<svg class="bi" width="24" height="24">
+					<use xlink:href="#vkontakte"></use>
+				</svg>
+			</a></li>
+			<li class="ms-3"><a class="text-muted" href="https://www.instagram.com/alexzurnachyan/"">
+				<svg class="bi" width="24" height="24">
+					<use xlink:href="#instagram"></use>
+				</svg>
+			</a></li>
+		</ul>
+	</footer>
+</div>
+</body>
+</html>
