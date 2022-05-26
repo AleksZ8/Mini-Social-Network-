@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 from django import forms
 from .models import Profil, Comment
-from .utils import send_activation_notification
+from .tasks import send_activation_notification
 
 
 class CommentForm(forms.ModelForm):
@@ -14,13 +14,11 @@ class CommentForm(forms.ModelForm):
         exclude = ('profil', 'author')
 
 
-#Email
 class ContactForm(forms.Form):
     subject = forms.CharField(label='Тема', widget=forms.TextInput())
     body = forms.CharField(label='Сообщение', widget=forms.Textarea())
 
 
-#PROFILE
 class EditProfile(forms.ModelForm):
     class Meta:
         model = Profil
@@ -33,7 +31,6 @@ class Myprofile(forms.ModelForm):
         fields = ['name', 'text', 'image']
 
 
-#USER
 class AuthUser(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={
         'class': 'form-control',
@@ -53,7 +50,7 @@ class AuthUser(AuthenticationForm):
             if self.user_cache is None:
                 raise self.get_invalid_login_error()
             elif not self.user_cache.status:
-                send_activation_notification(self.request, self.user_cache)
+                send_activation_notification.delay(self.user_cache)
                 raise ValidationError('Нет подтвержден Email')
             else:
                 self.confirm_login_allowed(self.user_cache)

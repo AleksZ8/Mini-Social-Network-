@@ -1,21 +1,48 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, update_session_auth_hash, get_user_model
-from django.utils.http import urlsafe_base64_decode
-from django.views.generic import ListView, DetailView, CreateView, FormView
-from django.views import View
-from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import (get_user_model, login, logout,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.tokens import default_token_generator as token_generator
-
-from .forms import AuthUser, UserRegister, Myprofile, EditProfile, ContactForm, CommentForm
-from .models import Profil, User, Comment
+from django.contrib.auth.tokens import \
+    default_token_generator as token_generator
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import urlsafe_base64_decode
+from django.views import View
+from django.views.generic import ListView
+
 from mysite.settings import EMAIL_HOST_USER
-from .utils import send_activation_notification, city_search
+
+from .forms import (AuthUser, CommentForm, ContactForm, EditProfile, Myprofile,
+                    UserRegister)
+from .models import Comment, Profil, Test
+from .tasks import city_search, send_activation_notification
 
 User = get_user_model()
+
+
+class All_Pages(LoginRequiredMixin, ListView):
+    model = Profil
+    template_name = 'pages.html'
+    context_object_name = 'pages'
+    paginate_by = 2
+
+    def get_queryset(self):
+        return Profil.objects.select_related('profil')
+
+
+@login_required
+def test_view(request):
+    if request.method == 'POST':
+        value = request.POST
+        for i in value.lists():
+            if i[1] == ['on']:
+                Test.objects.get(id=int(i[0])).delete()
+        return redirect('test')
+    else:
+        test = Test.objects.all()
+    return render(request, 'test.html', {'test': test})
 
 
 @login_required
@@ -34,16 +61,6 @@ def profileview(request, id):
         comment = Comment.objects.filter(profil=id).select_related('profil')
         context = {'profil': P_id, 'comment': comment, 'form': form}
     return render(request, 'coment.html', context)
-
-
-class All_Pages(LoginRequiredMixin, ListView):
-    model = Profil
-    template_name = 'pages.html'
-    context_object_name = 'pages'
-    paginate_by = 2
-
-    def get_queryset(self):
-        return Profil.objects.select_related('profil')
 
 
 @login_required
@@ -78,20 +95,19 @@ def add_page(request):
             new_form = form.save(commit=False)
             new_form.profil = user
             new_form.ip = request.META['REMOTE_ADDR']
-            new_form.city = city_search(request.META['REMOTE_ADDR'])
+            new_form.city = city_search.delay(request.META['REMOTE_ADDR']).get(timeout=1)
             new_form.save()
             return redirect('profil')
     else:
         form = Myprofile()
+
     return render(request, 'newprofile.html', {'form': form})
 
 
-# RLL
 def home(request):
     return render(request, 'home.html')
 
 
-# email
 @login_required
 def send_mes(request, user_id):
     user = Profil.objects.get(id=user_id)
@@ -117,14 +133,13 @@ def delprofile(request, profile_id):
     return redirect('profil')
 
 
-##USER AUTH SYSTEM
 def register(request):
     if request.method == 'POST':
         form = UserRegister(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            send_activation_notification(request, user)
+            send_activation_notification.delay(user.pk)
             return redirect('home')
     else:
         form = UserRegister()
@@ -180,12 +195,3 @@ class EmailVerify(View):
                 User.DoesNotExist, ValidationError):
             user = None
         return user
-
-
-
-
-
-
-
-
-

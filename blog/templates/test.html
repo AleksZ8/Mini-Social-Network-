@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9 mt-1">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for p in test %}
+
+            <div class="card-block" style="width: 18rem;">
+                <div class="card-body">
+                    <input type="checkbox" name="{{p.id}}">{{p.id}}
+                    <h5 class="card-title">{{ p.test }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+            {% if test %}
+            <button type="submit">удалить</button>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

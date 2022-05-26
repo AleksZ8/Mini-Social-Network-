@@ -24,7 +24,7 @@ class Comment(models.Model):
     author = models.CharField(max_length=30, verbose_name='Автор')
     content = models.TextField(verbose_name='Коментарий')
     created_date = models.DateTimeField(auto_now_add=True, db_index=True,
-                                      verbose_name='Опубликован')
+                                        verbose_name='Опубликован')
 
     class Meta:
         verbose_name_plural = 'Комментарии'
@@ -32,3 +32,8 @@ class Comment(models.Model):
         ordering = ['created_date']
 
 
+class Test(models.Model):
+    test = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.test
