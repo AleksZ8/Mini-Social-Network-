@@ -1,4 +1,4 @@
-<h1> Блог </h1>
+<h1> Mini Social Network  </h1>
 
 ### USE📊
 
