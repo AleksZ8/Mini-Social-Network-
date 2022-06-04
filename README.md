@@ -20,13 +20,20 @@
 7. Кеширование через Redis.
 8. Внешние запросы через Celery (местоположение, подтверждение email)
 
+Для запуска проекта понадобится Docker,и Clone репозитория.
 
+Clone: https://github.com/AleksZ8/Mini-Social-Network-.git 
+
+меняем данные в .env-hub
+
+console: docker-compose up
+
+Заходим в браузер: http://localhost:8080 
 
  
 <a href='http://t.me/alexzurn'>
 <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" />  
 </a>&nbsp;
-
 
 
 
