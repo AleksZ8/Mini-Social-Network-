@@ -110,26 +110,23 @@ def home(request):
 
 @login_required
 def send_mes(request, user_id):
-    user = Profil.objects.get(id=user_id)
-    user_send = User.objects.get(id=user.profil.id)
+    user_send = User.objects.filter(profil__id=user_id)
     sender = User.objects.get(id=request.user.id)
-    mail = sender.email
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
         if form.is_valid():
             mail_mes = f'Здравствуйте, {user_send.username} \nВам отправили письмо с сайта AleksZ8.\n ' \
-                       f'Отправитель данного письма {sender.first_name} {sender.last_name} {mail}  \n {form.cleaned_data["body"]}'
+                       f'Отправитель данного письма {sender.first_name} {sender.last_name} {sender.email}  \n {form.cleaned_data["body"]}'
             send_mail(form.cleaned_data['subject'], mail_mes, EMAIL_HOST_USER, [user_send.email])
             return redirect('pages')
     else:
         form = ContactForm()
-    return render(request, 'contact.html', {'form': form})
+    return render(request, 'contact.html', {'form': form, 'user': user_send})
 
 
 @login_required
 def delprofile(request, profile_id):
-    profile = Profil.objects.filter(profil=request.user).get(id=profile_id)
-    profile.delete()
+    Profil.objects.filter(profil=request.user).get(id=profile_id).delete()
     return redirect('profil')
 
 

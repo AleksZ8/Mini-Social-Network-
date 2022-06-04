@@ -8,7 +8,7 @@ class User(AbstractUser):
 
 
 class Profil(models.Model):
-    profil = models.OneToOneField(User, on_delete=models.CASCADE)
+    profil = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profil')
     name = models.CharField(max_length=50)
     text = models.TextField()
     image = models.ImageField(upload_to='users')

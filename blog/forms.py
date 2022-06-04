@@ -50,8 +50,9 @@ class AuthUser(AuthenticationForm):
             if self.user_cache is None:
                 raise self.get_invalid_login_error()
             elif not self.user_cache.status:
-                send_activation_notification.delay(self.user_cache)
-                raise ValidationError('Нет подтвержден Email')
+                print(self.user_cache.id)
+                send_activation_notification.delay(self.user_cache.id)
+                raise ValidationError('Не подтвержден Email')
             else:
                 self.confirm_login_allowed(self.user_cache)
         return self.cleaned_data
